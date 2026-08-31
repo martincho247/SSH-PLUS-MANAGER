@@ -1,61 +1,76 @@
+cat > /bin/menu << 'EOF'
 #!/bin/bash
-# Menu SSH-PLUS-MANAGER con HWID
-
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-WHITE='\033[1;37m'
-NC='\033[0m'
 
 show_menu() {
     clear
-    echo -e "${CYAN}=======================================${NC}"
-    echo -e "${CYAN}  SSH-PLUS-MANAGER                    ${NC}"
-    echo -e "${CYAN}=======================================${NC}"
+    echo "======================================="
+    echo "  SSH-PLUS-MANAGER                    "
+    echo "======================================="
     echo ""
-    echo -e "${WHITE}[01] • CREATE USER              [11] • SPEEDTEST${NC}"
-    echo -e "${WHITE}[02] • CREATE HWID              [12] • BANNER${NC}"
-    echo -e "${WHITE}[03] • REMOVE USER              [13] • TRAFFIC${NC}"
-    echo -e "${WHITE}[04] • MONITOR ONLINE           [14] • OPTIMIZE${NC}"
-    echo -e "${WHITE}[05] • CHANGE DATE              [15] • BACKUP${NC}"
-    echo -e "${WHITE}[06] • CHANGE LIMIT             [16] • LIMITER ○${NC}"
-    echo -e "${WHITE}[07] • CHANGE PASSWORD          [17] • BAD VPN ○${NC}"
-    echo -e "${WHITE}[08] • REMOVE EXPIRED           [18] • INFO VPS${NC}"
-    echo -e "${WHITE}[09] • USER REPORT              [19] • MORE >>>${NC}"
-    echo -e "${WHITE}[10] • CONNECTION MODE          [00] • GET OUT <<<${NC}"
-    echo ""
-    echo -e "${CYAN}Comandos HWID:${NC}"
-    echo -e "${YELLOW}  criarhwid  - Crear licencia HWID${NC}"
-    echo -e "${YELLOW}  verhwid    - Ver HWIDs registrados${NC}"
-    echo -e "${YELLOW}  delhwid    - Eliminar HWID${NC}"
+    echo "[01] CREATE USER              [11] SPEEDTEST"
+    echo "[02] SISTEMA HWID             [12] BANNER"
+    echo "[03] REMOVE USER              [13] TRAFFIC"
+    echo "[04] MONITOR ONLINE           [14] OPTIMIZE"
+    echo "[05] CHANGE DATE              [15] BACKUP"
+    echo "[06] CHANGE LIMIT             [16] LIMITER"
+    echo "[07] CHANGE PASSWORD          [17] BAD VPN"
+    echo "[08] REMOVE EXPIRED           [18] INFO VPS"
+    echo "[09] USER REPORT              [19] MORE"
+    echo "[10] CONNECTION MODE          [00] EXIT"
     echo ""
     read -p "Selecciona una opción: " option
-    
+
     case $option in
-        1) bash /bin/criarusuario ;;
-        2) bash /bin/criarhwid ;;
-        3) bash /bin/remover ;;
-        4) bash /bin/monitor ;;
-        5) bash /bin/mudardata ;;
-        6) bash /bin/limitar ;;
-        7) bash /bin/mudarsenha ;;
-        8) bash /bin/expcleaner ;;
-        9) bash /bin/menuv1 ;;
-        10) bash /bin/menuv2 ;;
-        11) bash /bin/speedtest ;;
-        12) bash /bin/banner ;;
-        13) bash /bin/trafego ;;
-        14) bash /bin/otimizar ;;
-        15) bash /bin/backup ;;
-        16) bash /bin/limiter ;;
-        17) bash /bin/badvpn ;;
-        18) bash /bin/info ;;
-        19) bash /bin/menuv3 ;;
+        1) /bin/criarusuario ;;
+        2) menu_hwid ;;
+        3) /bin/remover ;;
+        4) /bin/monitor ;;
+        5) /bin/mudardata ;;
+        6) /bin/limitar ;;
+        7) /bin/mudarsenha ;;
+        8) /bin/expcleaner ;;
+        9) /bin/menuv1 ;;
+        10) /bin/menuv2 ;;
+        11) /bin/speedtest ;;
+        12) /bin/banner ;;
+        13) /bin/trafego ;;
+        14) /bin/otimizar ;;
+        15) /bin/backup ;;
+        16) /bin/limiter ;;
+        17) /bin/badvpn ;;
+        18) /bin/info ;;
+        19) /bin/menuv3 ;;
         00) exit 0 ;;
-        *) echo -e "${RED}Opción inválida${NC}"; sleep 2; show_menu ;;
+        *) echo "Opción inválida"; sleep 2; show_menu ;;
+    esac
+}
+
+menu_hwid() {
+    clear
+    echo "======================================="
+    echo "  SISTEMA HWID                        "
+    echo "======================================="
+    echo ""
+    echo "[1] CREAR HWID"
+    echo "[2] VER HWIDs REGISTRADOS"
+    echo "[3] ELIMINAR HWID"
+    echo "[0] VOLVER AL MENÚ PRINCIPAL"
+    echo ""
+    read -p "Selecciona una opción: " hwid_option
+
+    case $hwid_option in
+        1) /bin/criarhwid; menu_hwid ;;
+        2) /bin/verhwid; menu_hwid ;;
+        3) /bin/delhwid; menu_hwid ;;
+        0) show_menu ;;
+        *) echo "Opción inválida"; sleep 2; menu_hwid ;;
     esac
 }
 
 show_menu
+EOF
+
+chmod +x /bin/menu
+
+# Probar
+menu
