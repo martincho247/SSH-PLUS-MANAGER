@@ -1,45 +1,69 @@
-cat > /bin/menu << 'EOF'
 #!/bin/bash
+
+get_system_info() {
+    IP=$(cat /etc/IP 2>/dev/null || echo "DESCONOCIDO")
+    SISTEMA=$(cat /etc/os-release | grep "PRETTY_NAME" | cut -d'"' -f2)
+    HORA=$(date +%H:%M:%S)
+    RAM_TOTAL=$(free -h | awk '/Mem:/ {print $2}')
+    RAM_PORCENTAJE=$(free | awk '/Mem:/ {printf "%.2f", $3/$2 * 100}')
+    NUCLEOS=$(nproc)
+    CPU_USO=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1)
+    ONLINE=$(ps aux | grep -c "sshd:" 2>/dev/null)
+    ONLINE=$((ONLINE - 1))
+    if [ $ONLINE -lt 0 ]; then ONLINE=0; fi
+    EXPIRADOS=0
+    TOTAL=0
+    if [ -f /root/usuarios.db ]; then
+        TOTAL=$(wc -l < /root/usuarios.db)
+    fi
+}
 
 show_menu() {
     clear
-    echo "======================================="
-    echo "  SSH-PLUS-MANAGER                    "
-    echo "======================================="
+    get_system_info
+    
+    echo -e "\033[1;31m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    echo -e "\033[1;33mSISTEMA            RAM MEMORY        PROCESSOR\033[0m"
+    echo -e "\033[1;37mOS: \033[1;36m$SISTEMA\033[0m     \033[1;37mTotal: \033[1;36m$RAM_TOTAL\033[0m     \033[1;37mNuclei: \033[1;36m$NUCLEOS\033[0m"
+    echo -e "\033[1;37mHour: \033[1;36m$HORA\033[0m     \033[1;37mIn use: \033[1;36m$RAM_PORCENTAJE%\033[0m   \033[1;37mIn use: \033[1;36m$CPU_USO%\033[0m"
+    echo -e "\033[1;31m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    echo -e "\033[1;37mOnline: \033[1;32m$ONLINE\033[0m         \033[1;37mExpired: \033[1;31m$EXPIRADOS\033[0m     \033[1;37mTotal: \033[1;36m$TOTAL\033[0m"
+    echo -e "\033[1;31m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     echo ""
-    echo "[01] CREATE USER              [11] SPEEDTEST"
-    echo "[02] SISTEMA HWID             [12] BANNER"
-    echo "[03] REMOVE USER              [13] TRAFFIC"
-    echo "[04] MONITOR ONLINE           [14] OPTIMIZE"
-    echo "[05] CHANGE DATE              [15] BACKUP"
-    echo "[06] CHANGE LIMIT             [16] LIMITER"
-    echo "[07] CHANGE PASSWORD          [17] BAD VPN"
-    echo "[08] REMOVE EXPIRED           [18] INFO VPS"
-    echo "[09] USER REPORT              [19] MORE"
-    echo "[10] CONNECTION MODE          [00] EXIT"
+    
+    echo -e "\033[1;37m[01] • CREAR USUARIO            [11] • TEST DE VELOCIDAD\033[0m"
+    echo -e "\033[1;37m[02] • SISTEMA HWID             [12] • BANNER\033[0m"
+    echo -e "\033[1;37m[03] • ELIMINAR USUARIO         [13] • DETALLES\033[0m"
+    echo -e "\033[1;37m[04] • MONITOR ONLINE           [14] • OPTIMIZAR\033[0m"
+    echo -e "\033[1;37m[05] • CAMBIAR FECHA            [15] • BACKUP\033[0m"
+    echo -e "\033[1;37m[06] • CAMBIAR LÍMITE           [16] • LIMITADOR ○\033[0m"
+    echo -e "\033[1;37m[07] • CAMBIAR CONTRASEÑA       [17] • BAD VPN ○\033[0m"
+    echo -e "\033[1;37m[08] • ELIMINAR EXPIRADOS       [18] • INFO VPS\033[0m"
+    echo -e "\033[1;37m[09] • REPORTE DE USUARIOS      [19] • MÁS >>>\033[0m"
+    echo -e "\033[1;37m[10] • MODO DE CONEXIÓN         [00] • SALIR <<<\033[0m"
     echo ""
     read -p "Selecciona una opción: " option
 
     case $option in
-        1) /bin/criarusuario ;;
+        1) /bin/criarusuario; show_menu ;;
         2) menu_hwid ;;
-        3) /bin/remover ;;
-        4) /bin/monitor ;;
-        5) /bin/mudardata ;;
-        6) /bin/limitar ;;
-        7) /bin/mudarsenha ;;
-        8) /bin/expcleaner ;;
-        9) /bin/menuv1 ;;
-        10) /bin/menuv2 ;;
-        11) /bin/speedtest ;;
-        12) /bin/banner ;;
-        13) /bin/trafego ;;
-        14) /bin/otimizar ;;
-        15) /bin/backup ;;
-        16) /bin/limiter ;;
-        17) /bin/badvpn ;;
-        18) /bin/info ;;
-        19) /bin/menuv3 ;;
+        3) /bin/remover; show_menu ;;
+        4) /bin/sshmonitor; show_menu ;;
+        5) /bin/mudardata; show_menu ;;
+        6) /bin/alterarlimite; show_menu ;;
+        7) /bin/alterarsenha; show_menu ;;
+        8) /bin/uexpired; show_menu ;;
+        9) /bin/infousers; show_menu ;;
+        10) /bin/conexao; show_menu ;;
+        11) /bin/speedtest; show_menu ;;
+        12) /bin/banner; show_menu ;;
+        13) /bin/detalhes; show_menu ;;
+        14) /bin/otimizar; show_menu ;;
+        15) /bin/userbackup; show_menu ;;
+        16) /bin/limiter; show_menu ;;
+        17) /bin/badvpn; show_menu ;;
+        18) /bin/infousers; show_menu ;;
+        19) menu_more ;;
         00) exit 0 ;;
         *) echo "Opción inválida"; sleep 2; show_menu ;;
     esac
@@ -47,17 +71,20 @@ show_menu() {
 
 menu_hwid() {
     clear
-    echo "======================================="
-    echo "  SISTEMA HWID                        "
-    echo "======================================="
+    get_system_info
+    
+    echo -e "\033[1;31m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    echo -e "\033[1;37mOnline: \033[1;32m$ONLINE\033[0m         \033[1;37mExpired: \033[1;31m$EXPIRADOS\033[0m     \033[1;37mTotal: \033[1;36m$TOTAL\033[0m"
+    echo -e "\033[1;31m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     echo ""
-    echo "[1] CREAR HWID"
-    echo "[2] VER HWIDs REGISTRADOS"
-    echo "[3] ELIMINAR HWID"
-    echo "[0] VOLVER AL MENÚ PRINCIPAL"
+    echo -e "\033[1;36m======= SISTEMA HWID =======\033[0m"
+    echo ""
+    echo -e "\033[1;37m[1] • CREAR HWID\033[0m"
+    echo -e "\033[1;37m[2] • VER HWIDs REGISTRADOS\033[0m"
+    echo -e "\033[1;37m[3] • ELIMINAR HWID\033[0m"
+    echo -e "\033[1;37m[0] • VOLVER\033[0m"
     echo ""
     read -p "Selecciona una opción: " hwid_option
-
     case $hwid_option in
         1) /bin/criarhwid; menu_hwid ;;
         2) /bin/verhwid; menu_hwid ;;
@@ -67,10 +94,30 @@ menu_hwid() {
     esac
 }
 
+menu_more() {
+    clear
+    echo "[20] • ADD HOST              [26] • CAMBIAR PASS ROOT"
+    echo "[21] • ELIMINAR HOST         [27] • AUTO EXECUTION"
+    echo "[22] • REINICIAR SISTEMA     [28] • ACTUALIZAR SCRIPT"
+    echo "[23] • REINICIAR SERVICIOS   [29] • ELIMINAR SCRIPT"
+    echo "[24] • BLOQUEAR TORRENT      [30] • VOLVER"
+    echo "[25] • BOT TELEGRAM          [00] • SALIR"
+    echo ""
+    read -p "Opción: " more_option
+    case $more_option in
+        20) /bin/addhost; menu_more ;;
+        21) /bin/delhost; menu_more ;;
+        22) /bin/reiniciarsistema; menu_more ;;
+        23) /bin/reiniciarservicos; menu_more ;;
+        24) /bin/blockt; menu_more ;;
+        25) /bin/botssh; menu_more ;;
+        26) /bin/senharoot; menu_more ;;
+        27) /bin/attscript; menu_more ;;
+        28) /bin/attscript; menu_more ;;
+        29) /bin/delscript; menu_more ;;
+        30) show_menu ;;
+        00) exit 0 ;;
+    esac
+}
+
 show_menu
-EOF
-
-chmod +x /bin/menu
-
-# Probar
-menu
