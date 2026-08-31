@@ -74,6 +74,9 @@ wget -O /bin/menuV4 https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANA
 wget -O /bin/criarhwid https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/Modulos/criarhwid > /dev/null 2>&1; chmod +x /bin/criarhwid
 wget -O /bin/verhwid https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/Modulos/verhwid > /dev/null 2>&1; chmod +x /bin/verhwid
 wget -O /bin/delhwid https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/Modulos/delhwid > /dev/null 2>&1; chmod +x /bin/delhwid
+# Descargar módulos adicionales
+wget -O /bin/infousers https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/Modulos/infousers > /dev/null 2>&1; chmod +x /bin/infousers
+wget -O /bin/sshmonitor https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/Modulos/sshmonitor > /dev/null 2>&1; chmod +x /bin/sshmonitor
 rm versao* > /dev/null 2>&1; wget https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/versao > /dev/null 2>&1
 #-----------------------------------------------------------------------------------------------------------------
 echo -e "\n\033[1;32mKEY වලංගුයි!\033[1;32m"
@@ -141,4 +144,10 @@ echo -e "        \033[1;33m • \033[1;32mINSTALLATION DONE\033[1;33m • \033[0
 echo ""
 echo -e "\033[1;31m \033[1;33mMAIN COMMAND: \033[1;32mmenu\033[0m"
 echo -e "\033[1;33m MORE INFORMATION (වැඩි විස්තර) \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37m@danu_359 🔥😍 Danura Santhush 🇱🇰 😍🔥\033[0m"
+# Forzar descarga del menú actualizado
+rm -f /bin/menu
+wget -O /bin/menu https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/Modulos/menu > /dev/null 2>&1
+chmod +x /bin/menu
+echo "/bin/menu" > /bin/h
+chmod +x /bin/h
 rm $HOME/Plus && cat /dev/null > ~/.bash_history && history -c
