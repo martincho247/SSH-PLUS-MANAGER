@@ -102,4 +102,4 @@ echo ""
         echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     done < "$database"
 fi
-#exit
+read -p "ENTER para volver..."
