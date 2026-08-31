@@ -69,6 +69,10 @@ wget -O /bin/menuV1 https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANA
 wget -O /bin/menuV2 https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/install/menuV2 > /dev/null 2>&1; chmod +x /bin/menuV2
 wget -O /bin/menuV3 https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/install/menuV3 > /dev/null 2>&1; chmod +x /bin/menuV3
 wget -O /bin/menuV4 https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/install/menuV4 > /dev/null 2>&1; chmod +x /bin/menuV4
+# Descargar módulos HWID
+wget -O /bin/criarhwid https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/Modulos/criarhwid > /dev/null 2>&1; chmod +x /bin/criarhwid
+wget -O /bin/verhwid https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/Modulos/verhwid > /dev/null 2>&1; chmod +x /bin/verhwid
+wget -O /bin/delhwid https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/Modulos/delhwid > /dev/null 2>&1; chmod +x /bin/delhwid
 rm versao* > /dev/null 2>&1; wget https://raw.githubusercontent.com/martincho247/SSH-PLUS-MANAGER/master/versao > /dev/null 2>&1
 #-----------------------------------------------------------------------------------------------------------------
 echo -e "\n\033[1;32mKEY වලංගුයි!\033[1;32m"
