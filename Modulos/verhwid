@@ -1,13 +1,13 @@
 #!/bin/bash
 clear
-echo -e "\E[44;1;37m     HWIDs Registrados     \E[0m"
+echo "======================================="
+echo "  HWIDs REGISTRADOS                   "
+echo "======================================="
 echo ""
 if [ -f /etc/SSHPlus/hwid/hwid.db ]; then
-    echo -e "\033[1;32mNombre | HWID | Limite | Dias | Licencia | Fecha\033[0m"
-    echo -e "\033[1;33m─────────────────────────────────────────────────\033[0m"
     cat /etc/SSHPlus/hwid/hwid.db
 else
-    echo -e "\033[1;31mNo hay HWIDs registrados\033[0m"
+    echo "No hay HWIDs registrados"
 fi
 echo ""
 read -p "ENTER para volver..."
