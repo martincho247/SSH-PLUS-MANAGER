@@ -1,0 +1,22 @@
+#!/bin/bash
+clear
+echo -e "\E[44;1;37m     Eliminar HWID     \E[0m"
+echo ""
+if [ -f /etc/SSHPlus/hwid/hwid.db ]; then
+    echo -e "\033[1;33mHWIDs registrados:\033[0m"
+    cat /etc/SSHPlus/hwid/hwid.db
+    echo ""
+    echo -ne "\033[1;32mNombre del cliente a eliminar\033[1;37m: "; read nome
+    if [ -f /etc/SSHPlus/hwid/$nome.key ]; then
+        rm -f /etc/SSHPlus/hwid/$nome.key
+        rm -f /etc/SSHPlus/hwid/$nome.sh
+        grep -v "^$nome|" /etc/SSHPlus/hwid/hwid.db > /tmp/ph ; cat /tmp/ph > /etc/SSHPlus/hwid/hwid.db
+        echo -e "\033[1;32m✓ HWID de $nome eliminado\033[0m"
+    else
+        echo -e "\033[1;31m✗ No se encontró HWID para $nome\033[0m"
+    fi
+else
+    echo -e "\033[1;31mNo hay HWIDs registrados\033[0m"
+fi
+echo ""
+read -p "ENTER para volver..."
